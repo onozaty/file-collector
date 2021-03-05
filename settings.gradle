@@ -1,0 +1,3 @@
+rootProject.name = 'file-collector'
+
+include 'file-collector-core'
