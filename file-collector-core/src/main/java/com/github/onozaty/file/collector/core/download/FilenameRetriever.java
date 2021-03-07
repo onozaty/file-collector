@@ -1,5 +1,6 @@
 package com.github.onozaty.file.collector.core.download;
 
+import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
@@ -90,5 +91,33 @@ public class FilenameRetriever {
         }
 
         return null;
+    }
+
+    /**
+     * URLから取得します。
+     * @param url URL
+     * @return ファイル名
+     */
+    public static String retrieveByUrl(String url) {
+
+        try {
+
+            // クエリパラメータ部分を除外して、最後の"/"以降を取り出し
+            String path = new URL(url).getPath();
+            int lastSeparatorIndex = path.lastIndexOf("/");
+            String filename = path.substring(lastSeparatorIndex + 1);
+
+            // セミコロンでパラメータ渡しているものがあった場合は、その部分を除外
+            int semicolonIndex = filename.indexOf(";");
+            if (semicolonIndex != -1) {
+                filename = filename.substring(0, semicolonIndex);
+            }
+
+            return URLDecoder.decode(filename, StandardCharsets.UTF_8.name());
+
+        } catch (Exception e) {
+            log.warn(String.format("retrieveByUrl failed. url=[%s]", url), e);
+            return null;
+        }
     }
 }

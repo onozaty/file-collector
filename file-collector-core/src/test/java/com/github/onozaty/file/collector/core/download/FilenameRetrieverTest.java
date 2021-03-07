@@ -82,4 +82,29 @@ public class FilenameRetrieverTest {
                 .isNull();
     }
 
+    /**
+     * {@link FilenameRetriever#retrieveByUrl(String)}のテストです。
+     */
+    @Test
+    public void retrieveByUrl() {
+
+        assertThat(FilenameRetriever.retrieveByUrl("http://example.com/a/a.pdf"))
+                .isEqualTo("a.pdf");
+
+        assertThat(
+                FilenameRetriever
+                        .retrieveByUrl("http://example.com/a/%E3%81%82%E3%81%84%E3%81%86%E3%81%88%E3%81%8A.pdf"))
+                                .isEqualTo("あいうえお.pdf");
+    }
+
+    /**
+     * {@link FilenameRetriever#retrieveByUrl(String)}のテストです。
+     */
+    @Test
+    public void retrieveByUrl_セミコロンあり() {
+
+        assertThat(FilenameRetriever.retrieveByUrl("http://example.com/a/a.pdf;a=b"))
+                .isEqualTo("a.pdf");
+    }
+
 }
