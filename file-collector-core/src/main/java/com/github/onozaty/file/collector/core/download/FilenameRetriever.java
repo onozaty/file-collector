@@ -54,39 +54,43 @@ public class FilenameRetriever {
             return null;
         }
 
-        Matcher matcher = CONTENT_DISPOSITION_FILENAME_PATTERN.matcher(contentDispositionValue);
-        if (matcher.find()) {
-            String value = matcher.group(1);
-            String filename;
-            try {
-                filename = DecoderUtil.decodeEncodedWords(value, DecodeMonitor.STRICT);
-            } catch (Throwable e) { // DecoderUtil#decodeEncodedWordsがErrorを返すことがあるので
-                log.warn(String.format("DecoderUtil#decodeEncodedWords failed. value=[%s]", value), e);
-                filename = value;
-            }
+        {
+            Matcher matcher = CONTENT_DISPOSITION_FILENAME_PATTERN.matcher(contentDispositionValue);
+            if (matcher.find()) {
+                String value = matcher.group(1);
+                String filename;
+                try {
+                    filename = DecoderUtil.decodeEncodedWords(value, DecodeMonitor.STRICT);
+                } catch (Throwable e) { // DecoderUtil#decodeEncodedWordsがErrorを返すことがあるので
+                    log.warn(String.format("DecoderUtil#decodeEncodedWords failed. value=[%s]", value), e);
+                    filename = value;
+                }
 
-            try {
-                return URLDecoder.decode(filename, StandardCharsets.UTF_8.name());
-            } catch (Exception e) {
-                log.warn(String.format("URLDecoder#decode failed. value=[%s]", value), e);
-                return filename;
+                try {
+                    return URLDecoder.decode(filename, StandardCharsets.UTF_8.name());
+                } catch (Exception e) {
+                    log.warn(String.format("URLDecoder#decode failed. value=[%s]", value), e);
+                    return filename;
+                }
             }
         }
 
-        matcher = CONTENT_DISPOSITION_FILENAME_WITH_ENCODING_PATTERN.matcher(contentDispositionValue);
-        if (matcher.find()) {
-            String encoding = matcher.group(1);
-            String value = matcher.group(2);
+        {
+            Matcher matcher = CONTENT_DISPOSITION_FILENAME_WITH_ENCODING_PATTERN.matcher(contentDispositionValue);
+            if (matcher.find()) {
+                String encoding = matcher.group(1);
+                String value = matcher.group(2);
 
-            try {
-                return new URLCodec(encoding).decode(value);
-            } catch (Exception e) {
-                // おかしなエンコーディングの場合、デコード前の文字を返却
-                log.warn(
-                        String.format("URLCodec#decode failed. encoding=[%s] value=[%s]", encoding, value),
-                        e);
+                try {
+                    return new URLCodec(encoding).decode(value);
+                } catch (Exception e) {
+                    // おかしなエンコーディングの場合、デコード前の文字を返却
+                    log.warn(
+                            String.format("URLCodec#decode failed. encoding=[%s] value=[%s]", encoding, value),
+                            e);
 
-                return value;
+                    return value;
+                }
             }
         }
 
