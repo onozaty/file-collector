@@ -49,9 +49,9 @@ public class GitHubWebSearcher {
                 String query = queries.get(i);
 
                 try {
-                    log.info("Search started. query({}/{})=[{}]", i + 1, queries.size(), query);
+                    log.info("({}/{}) [{}] Started.", i + 1, queries.size(), query);
                     List<String> urls = search(driver, query);
-                    log.info("Search finished. count=[{}]", urls.size());
+                    log.info("({}/{}) Finished. The number of URLs was {}.", i + 1, queries.size(), urls.size());
 
                     resultUrls.addAll(urls);
                 } catch (Exception e) {
