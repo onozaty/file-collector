@@ -2,7 +2,7 @@
 
 ```
 gradlew shadowJar
-java -jar build\libs\file-collector-github-all.jar -q "extension:pdf filename:test5" -o output
+java -jar build/libs/file-collector-github-all.jar -q "extension:pdf filename:test5" -o output
 ```
 
 The arguments are as follows.

@@ -85,7 +85,8 @@ public class GitHubWebSearcher {
         List<String> resultUrls = new ArrayList<>();
 
         driver.get(
-                "https://github.com/search?type=code&q="
+                // 対象はCode、SortはRecently indexedで
+                "https://github.com/search?type=code&s=indexed&o=desc&q="
                         + URLEncoder.encode(query, StandardCharsets.UTF_8.name()));
 
         // ログインが済むまで待ち合わせ
