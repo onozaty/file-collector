@@ -84,7 +84,7 @@ public class GitHubFileCollector {
         help.setOptionComparator(null); // 順番を変えない
 
         // ヘルプを出力
-        help.printHelp("java -jar file-collector-github.jar", options, true);
+        help.printHelp("java -jar file-collector-github-all.jar", options, true);
         System.exit(1);
     }
 
