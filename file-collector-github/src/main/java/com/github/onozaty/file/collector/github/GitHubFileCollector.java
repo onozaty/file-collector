@@ -19,8 +19,8 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
-import com.github.onozaty.file.collector.core.download.DownloadResult;
-import com.github.onozaty.file.collector.core.download.Downloader;
+import com.github.onozaty.file.collector.download.DownloadResult;
+import com.github.onozaty.file.collector.download.Downloader;
 
 import lombok.extern.slf4j.Slf4j;
 

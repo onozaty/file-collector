@@ -1,8 +1,10 @@
-package com.github.onozaty.file.collector.core.download;
+package com.github.onozaty.file.collector.download;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
+
+import com.github.onozaty.file.collector.download.FilenameRetriever;
 
 /**
  * {@link FilenameRetriever}のテストクラスです。

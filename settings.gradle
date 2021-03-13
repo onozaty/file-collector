@@ -1,4 +1,4 @@
 rootProject.name = 'file-collector'
 
-include 'file-collector-core'
+include 'file-collector-download'
 include 'file-collector-github'

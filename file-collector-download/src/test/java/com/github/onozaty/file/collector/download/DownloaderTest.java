@@ -1,4 +1,4 @@
-package com.github.onozaty.file.collector.core.download;
+package com.github.onozaty.file.collector.download;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
@@ -11,6 +11,9 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
+
+import com.github.onozaty.file.collector.download.DownloadResult;
+import com.github.onozaty.file.collector.download.Downloader;
 
 /**
  * {@link Downloader}のテストクラスです。

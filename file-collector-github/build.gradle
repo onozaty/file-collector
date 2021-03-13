@@ -10,7 +10,7 @@ repositories { jcenter() }
 
 dependencies {
 
-    implementation project(':file-collector-core')
+    implementation project(':file-collector-download')
 
     implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
     implementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '4.3.1'

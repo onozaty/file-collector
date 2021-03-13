@@ -1,4 +1,4 @@
-package com.github.onozaty.file.collector.core.download;
+package com.github.onozaty.file.collector.download;
 
 import java.nio.file.Path;
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>file-collector-core</name>
-	<comment>Project file-collector-core created by Buildship.</comment>
+	<name>file-collector-download</name>
+	<comment>Project file-collector-download created by Buildship.</comment>
 	<projects>
 	</projects>
 	<buildSpec>
