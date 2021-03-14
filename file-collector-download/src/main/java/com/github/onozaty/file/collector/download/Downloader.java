@@ -4,12 +4,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.StringUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +47,75 @@ public class Downloader {
      * 出力するファイル名の上限
      */
     private static final int OUTPUT_FILE_NAME_LIMIT = 40;
+
+    /**
+     * メイン
+     * @param args 引数
+     * @throws Exception
+     */
+    public static void main(String[] args) throws Exception {
+
+        CommandLineParser parser = new DefaultParser();
+
+        Options options = new Options();
+        options.addOption(
+                Option.builder("u")
+                        .longOpt("urls")
+                        .desc("URL list file")
+                        .hasArg()
+                        .argName("file")
+                        .required()
+                        .build());
+        options.addOption(
+                Option.builder("o")
+                        .longOpt("output")
+                        .desc("Output directory")
+                        .hasArg()
+                        .argName("directory")
+                        .required()
+                        .build());
+
+        try {
+            CommandLine line = parser.parse(options, args);
+
+            Path outputBaseDirectoryPath = Paths.get(line.getOptionValue("o"));
+            Path urlListFilePath = Paths.get(line.getOptionValue("u"));
+
+            List<String> urls = Files.readAllLines(urlListFilePath);
+
+            log.info("Download started. The number of URLs is {}.", urls.size());
+
+            List<DownloadResult> downloadResults =
+                    new Downloader().download(urls, outputBaseDirectoryPath.resolve("files"));
+
+            // ダウンロード結果を出力
+            try (DownloadResultWriter writer =
+                    new DownloadResultWriter(outputBaseDirectoryPath.resolve("download-results.csv"))) {
+                writer.write(downloadResults);
+            }
+
+            log.info(
+                    "Download finished. The number of files successfully downloaded was {}.",
+                    downloadResults.stream().filter(DownloadResult::isSuccess).count());
+
+        } catch (ParseException e) {
+            System.out.println("Unexpected exception:" + e.getMessage());
+            System.out.println();
+
+            printUsage(options);
+            return;
+        }
+    }
+
+    private static void printUsage(Options options) {
+        HelpFormatter help = new HelpFormatter();
+        help.setWidth(200);
+        help.setOptionComparator(null); // 順番を変えない
+
+        // ヘルプを出力
+        help.printHelp("java -jar file-collector-download-all.jar", options, true);
+        System.exit(1);
+    }
 
     /**
      * ダウンロードします。

@@ -1,6 +1,5 @@
 package com.github.onozaty.file.collector.github;
 
-import java.io.BufferedWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,10 +15,9 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
 
 import com.github.onozaty.file.collector.download.DownloadResult;
+import com.github.onozaty.file.collector.download.DownloadResultWriter;
 import com.github.onozaty.file.collector.download.Downloader;
 
 import lombok.extern.slf4j.Slf4j;
@@ -117,26 +115,14 @@ public class GitHubFileCollector {
         List<DownloadResult> downloadResults =
                 new Downloader().download(urls, outputBaseDirectoryPath.resolve("files"));
 
+        // ダウンロード結果を出力
+        try (DownloadResultWriter writer =
+                new DownloadResultWriter(outputBaseDirectoryPath.resolve("download-results.csv"))) {
+            writer.write(downloadResults);
+        }
+
         log.info(
                 "Download finished. The number of files successfully downloaded was {}.",
                 downloadResults.stream().filter(DownloadResult::isSuccess).count());
-
-        // ダウンロード結果を出力
-        try (BufferedWriter writer = Files.newBufferedWriter(
-                outputBaseDirectoryPath.resolve("download-results.csv"), StandardCharsets.UTF_8);
-                CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.EXCEL)) {
-
-            writer.write('\uFEFF'); // BOM
-
-            csvPrinter.printRecord("URL", "File Name");
-
-            for (DownloadResult result : downloadResults) {
-                csvPrinter.printRecord(
-                        result.getUrl(),
-                        result.isSuccess()
-                                ? result.getOutputFilePath().getFileName()
-                                : null);
-            }
-        }
     }
 }
