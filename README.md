@@ -1,3 +1,4 @@
 # file-collector
 
-* [from GitHub](./file-collector-github)
+* [file-collector-download](./file-collector-download)
+* [file-collector-github](./file-collector-github)
