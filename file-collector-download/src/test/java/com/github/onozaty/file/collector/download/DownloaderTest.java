@@ -12,9 +12,6 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
-import com.github.onozaty.file.collector.download.DownloadResult;
-import com.github.onozaty.file.collector.download.Downloader;
-
 /**
  * {@link Downloader}のテストクラスです。
  * @author onozaty
@@ -67,7 +64,7 @@ public class DownloaderTest {
                     Arrays.asList(
                             "https://github.com/onozaty/file-collector/blob/main/README.md",
                             "https://github.com/onozaty/file-collector/blob/main/gradlew.bat",
-                            "https://github.com/onozaty/file-collector/blob/main/file-collector-core/build.gradle"),
+                            "https://github.com/onozaty/file-collector/blob/main/file-collector-download/build.gradle"),
                     outputTempDirectoryPath);
 
             assertThat(results)
@@ -79,7 +76,7 @@ public class DownloaderTest {
                                     "https://github.com/onozaty/file-collector/blob/main/gradlew.bat",
                                     outputTempDirectoryPath.resolve("2_gradlew.bat")),
                             DownloadResult.success(
-                                    "https://github.com/onozaty/file-collector/blob/main/file-collector-core/build.gradle",
+                                    "https://github.com/onozaty/file-collector/blob/main/file-collector-download/build.gradle",
                                     outputTempDirectoryPath.resolve("3_build.gradle")));
 
             assertThat(Files.list(outputTempDirectoryPath))
@@ -109,7 +106,7 @@ public class DownloaderTest {
                     Arrays.asList(
                             "https://github.com/onozaty/file-collector/blob/main/README.md",
                             "https://github.com/onozaty/file-collector/blob/main/xxxxx", // 存在しないURL
-                            "https://github.com/onozaty/file-collector/blob/main/file-collector-core/build.gradle"),
+                            "https://github.com/onozaty/file-collector/blob/main/file-collector-download/build.gradle"),
                     outputTempDirectoryPath);
 
             assertThat(results)
@@ -124,7 +121,7 @@ public class DownloaderTest {
                                     false,
                                     null),
                             tuple(
-                                    "https://github.com/onozaty/file-collector/blob/main/file-collector-core/build.gradle",
+                                    "https://github.com/onozaty/file-collector/blob/main/file-collector-download/build.gradle",
                                     true,
                                     outputTempDirectoryPath.resolve("3_build.gradle")));
 
