@@ -116,7 +116,7 @@ public class GitHubWebSearcher {
 
     private List<String> collectResultUrls(WebDriver driver) {
 
-        return driver.findElements(By.cssSelector("div.code-list p.full-path > a")).stream()
+        return driver.findElements(By.cssSelector("div.code-list div.f4 > a")).stream()
                 .map(x -> {
                     // この時点では、コードを表示するページのURLなので、ダウンロード用のURLに置換
                     return x.getAttribute("href").replaceFirst("/blob/", "/raw/");
